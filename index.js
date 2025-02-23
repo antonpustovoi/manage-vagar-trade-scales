@@ -41,6 +41,10 @@ const setPrice = () => new Promise(resolve => {
 
 const readData = (type) => new Promise(resolve => {
     let buffer = "";
+    const timeoutId = setTimeout(() => {
+        clipboard.writeSync(String(0));
+        resolve();
+    }, 1000);
     port.on('data', function callback (data) {
         if(buffer.length < 18) {
             buffer += Buffer.from(data).toString();
@@ -52,6 +56,7 @@ const readData = (type) => new Promise(resolve => {
                 price: Number(arrayBuffer.slice(6, 12).join("")) / 100,
                 weight: Number(arrayBuffer.slice(12, 18).join("")) / 1000
             }
+            clearTimeout(timeoutId);
             clipboard.writeSync(String(data[type]))
             port.off("data", callback)
             console.log("DATA", data);
