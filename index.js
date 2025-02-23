@@ -23,7 +23,7 @@ const rl = readline.createInterface({
 });
 
 const port = new SerialPort({
-    path: 'COM13',
+    path: 'COM7',
     baudRate: 4800,
     parity: "even"
 })
@@ -75,24 +75,31 @@ const handleCommand = async (value) => {
         case "1": 
             await resetWeight();
             exit();
+            break;
         case "2": 
             await setPrice();
             exit();
+            break;
         case "3": 
             await readData("weight");
             exit();
+            break;
         case "4": 
             await readData("price");
             exit();
+            break;
         case "5": 
             await readData("totalPrice");
             exit();
+            break;
         case "6": 
             await setPrice();
             await readData("totalPrice");
             exit();
+            break;
         case "7":
-            exit();
+            port.close(() => process.exit());
+            break;
     }
 }
 
